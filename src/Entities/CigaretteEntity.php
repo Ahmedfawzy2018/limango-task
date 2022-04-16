@@ -36,7 +36,12 @@ class CigaretteEntity implements PurchasedItemInterface
      */
     public function getChange() :array
     {
-        return $this->change;
+        $changeReturn=[];
+        foreach ($this->change as $key => $value) {
+            $changeReturn[]= $key;
+            $changeReturn[]= $value;
+        }
+        return $changeReturn;
     }
 
     /**
@@ -60,8 +65,34 @@ class CigaretteEntity implements PurchasedItemInterface
      */
     public function setChange(float $change)
     {
-        list($count,$coin) = explode(".",$change);
-        $this->change= [$count,$coin];
+        $result = $this->countCurrency($change);
+        $this->change= $result;
+        
     }
+
+    function countCurrency($amount)
+    {
+        $notes = array(200, 100, 50, 20, 10,5, 1);
+        $noteCounter = array(0, 0, 0, 0, 0, 0, 0);
+        $change = array();
+        for ($i = 0; $i < 6; $i++)
+        {
+            if ($amount >= $notes[$i])
+            {
+                $noteCounter[$i] = intval($amount /$notes[$i]);
+                $amount = $amount -$noteCounter[$i] * $notes[$i];
+            }
+        }    
+        
+        for ($i = 0; $i < 6; $i++)
+        {
+            if ($noteCounter[$i] != 0 )
+            {
+                $change[$notes[$i]] = $noteCounter[$i] ;
+            }
+        }
+        return $change;
+    }
+
 
 }

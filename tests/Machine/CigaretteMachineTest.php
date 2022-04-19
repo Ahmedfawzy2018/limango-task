@@ -24,7 +24,7 @@ class CigaretteMachineTest extends MainTestCase
         $this->assertInstanceOf(CigaretteEntity::class,$cigaretteEntity);
 
         $this->assertIsArray($cigaretteEntity->getChange());
-        $this->assertEquals($this->cigratteTransactionEntity->getChange(), $cigaretteEntity->getChange());
+        $this->assertEquals($this->getChange(), $cigaretteEntity->getChange());
     }
 
 

@@ -55,9 +55,9 @@ class PurchaseCigarettesCommand extends Command
             $table = new Table($output);
             $table
                 ->setHeaders(array('Coins', 'Count'))
-                ->setRows(array(
+                ->setRows(
                     $cigaretteEntity->getChange()
-                ));
+                );
             $table->render();
         } catch (\Exception $exception) {
             $outputStyle->warning($exception->getMessage());

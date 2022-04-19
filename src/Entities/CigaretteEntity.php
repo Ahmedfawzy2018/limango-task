@@ -38,8 +38,7 @@ class CigaretteEntity implements PurchasedItemInterface
     {
         $changeReturn=[];
         foreach ($this->change as $key => $value) {
-            $changeReturn[]= $key;
-            $changeReturn[]= $value;
+            $changeReturn[]= [$key,$value];
         }
         return $changeReturn;
     }
@@ -72,25 +71,25 @@ class CigaretteEntity implements PurchasedItemInterface
 
     function countCurrency($amount)
     {
-        $notes = array(200, 100, 50, 20, 10,5, 1);
-        $noteCounter = array(0, 0, 0, 0, 0, 0, 0);
+        $notes = array(200, 100, 50, 20, 10,5, 1,0);
+        $noteCounter = array(0, 0, 0, 0, 0, 0, 0,0);
         $change = array();
-        for ($i = 0; $i < 6; $i++)
+        
+        for ($i = 0; $i < count($notes); $i++)
         {
             if ($amount >= $notes[$i])
             {
-                $noteCounter[$i] = intval($amount /$notes[$i]);
-                $amount = $amount -$noteCounter[$i] * $notes[$i];
+                $noteCounter[$i] = $notes[$i] > 0 ? intval($amount /$notes[$i]) : $amount;
+                $notes[$i] = $notes[$i] > 0 ?$notes[$i] :1;
+                $amount = $amount - $notes[$i];
             }
-        }    
-        
-        for ($i = 0; $i < 6; $i++)
-        {
-            if ($noteCounter[$i] != 0 )
+
+            if ($noteCounter[$i] > 0 )
             {
                 $change[$notes[$i]] = $noteCounter[$i] ;
             }
-        }
+        }    
+        
         return $change;
     }
 
